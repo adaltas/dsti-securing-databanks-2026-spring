@@ -89,6 +89,7 @@ And add a new form:
 
 ```js
 <form>
+  ...
   <Button formAction={signInWithGithub} variant="outline" className="w-full">
      Login with Github
   </Button>
