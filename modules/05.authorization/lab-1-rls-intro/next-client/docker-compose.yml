@@ -1,0 +1,9 @@
+  services:
+    nextjs:
+      build:
+        context: ../next-client
+        dockerfile: Dockerfile
+      ports:
+        - "3000:3000"
+      env_file:
+        - ../next-client/.env.local
