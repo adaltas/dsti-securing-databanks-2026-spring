@@ -1,0 +1,61 @@
+networks:
+  default:
+    name: traefik
+    external: true
+  traefik:
+    external: true
+services:
+  studio:
+    container_name: my-domain-studio
+    labels:
+      - "traefik.http.routers.my-domain-supabase.rule=Host(`studio.my-domain.localhost`)"
+      - "traefik.http.routers.my-domain-supabase.entrypoints=websecure"
+      - "traefik.http.services.my-domain-supabase.loadbalancer.server.port=3000"
+  kong:
+    container_name: my-domain-kong
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.my-domain-kong.rule=Host(`kong.my-domain.localhost`)"
+      # - "traefik.http.routers.my-domain-kong.entrypoints=websecure"
+      - "traefik.http.services.my-domain-kong.loadbalancer.server.port=8000"
+  auth:
+    container_name: my-domain-auth
+    environment:
+      API_EXTERNAL_URL: ${API_EXTERNAL_URL}
+  rest:
+    container_name: my-domain-rest
+  realtime:
+    container_name: my-domain-realtime
+  storage:
+    container_name: my-domain-storage
+  imgproxy:
+    container_name: my-domain-imgproxy
+  functions:
+    container_name: my-domain-edge-functions
+  meta:
+    container_name: my-domain-meta
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.my-domain-meta.rule=Host(`meta.my-domain.localhost`)"
+      # - "traefik.http.routers.my-domain-meta.entrypoints=websecure"
+      - "traefik.http.services.my-domain-meta.loadbalancer.server.port=8080"
+  analytics:
+    container_name: my-domain-analytics
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.my-domain-analytics.rule=Host(`analytics.my-domain.localhost`)"
+      # - "traefik.http.routers.my-domain-analytics.entrypoints=websecure"
+      - "traefik.http.services.my-domain-analytics.loadbalancer.server.port=4000"
+    environment:
+      # See https://supabase.com/docs/reference/self-hosting-analytics/introduction
+      # the following environment variables must be set
+      # LOGFLARE_SINGLE_TENANT_MODE=true for enabling single tenant mode for Logflare
+      # LOGFLARE_SUPABASE_MODE=true for seeding Supabase-related data
+      LOGFLARE_SINGLE_TENANT_MODE: true
+      LOGFLARE_SUPABASE_MODE: true
+    # logging:
+    #   driver: none
+  db:
+    container_name: my-domain-db
+  vector:
+    container_name: my-domain-vector
