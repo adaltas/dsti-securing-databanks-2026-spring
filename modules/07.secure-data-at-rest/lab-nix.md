@@ -248,3 +248,7 @@ git push -u origin main
 ```
 
 You just create a reproducible environment that can be deployed across all your machines.
+
+## Part 6. Apply configuration onto a new machine (medium level)
+
+Now find a way to apply those configuration onto a new machine.
